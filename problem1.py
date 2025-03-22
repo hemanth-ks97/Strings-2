@@ -4,7 +4,7 @@
 
 # Any problem you faced while coding this : NO
 
-class Solution:
+class RKSolution:
     def strStr(self, haystack: str, needle: str) -> int:
         power = 26 ** (len(needle) - 1)
         
@@ -34,3 +34,48 @@ class Solution:
             return l
         
         return -1
+
+# Time Complexity : O(n + m)
+# Space Complexity : O(1)
+# Did this code successfully run on Leetcode : YES
+
+# Any problem you faced while coding this : NO
+
+class Solution:
+    def strStr(self, haystack: str, needle: str) -> int:
+        lps_arr = self.lps(needle)
+        
+        i = 0
+        j = 0
+
+        while i < len(haystack):
+            if haystack[i] == needle[j]:
+                i += 1
+                j += 1
+                if j == len(needle):
+                    return i - len(needle)
+            elif haystack[i] != needle[j] and j != 0:
+                j = lps_arr[j-1]
+            elif haystack[i] != needle[j] and j == 0:
+                j = 0
+                i += 1
+        
+        return -1
+
+
+    def lps(self, needle):
+        lps = [0] * len(needle)
+        j = 0
+        i = 1
+        while (i < len(needle)):
+            if needle[j] == needle[i]:
+                j += 1
+                lps[i] = j
+                i += 1
+            elif needle[j] != needle[i] and j != 0:
+                j = lps[j-1]
+            elif needle[j] != needle[i] and j == 0:
+                lps[i] = 0
+                i += 1
+        
+        return lps
